@@ -1,0 +1,17 @@
+<nav>
+    <a href="/">
+        <h1>MATRIX MASTER COMMUNITY</h1>
+    </a>
+    <% if(!locals.user){ %>
+    <div>
+        <a class="btn btn-info btn-sm" href="/login">Login</a>
+        <a class="btn btn-info btn-sm" href="/signup">Sign Up</a>
+    </div>
+    <% } else { %>
+    <h6>Welcome <%= locals.user.email %></h6>
+    <form action="/logout" method="Post">
+        <button class="btn btn-warning logout">Logout</button>
+    </form>
+    <% } %>
+</nav>
+

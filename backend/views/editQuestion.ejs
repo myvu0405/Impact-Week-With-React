@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="/style.css">
+        <title><%- pageTitle %></title>
+    </head>
+
+<body>
+    <%- include("./components/nav") %>
+    <h3 class="title"> Edit a question </h3>
+    <div class="add-question">
+        <form class="form" method="POST" action=/editQuestion/<%= result._id%>>
+            <label for="question">Question:</label>
+            <input type="text" id="title" name="question" value="<%= result.question%>">
+            <% if (errors) { %>
+                <small id="err" class="form-text text-muted">
+                <%= errors.question %> </small>
+            <% } %>
+            <label for="desciption">Description:</label>
+            <textarea  name="description" placeholder="Enter description"><%= result.description%></textarea>
+            <% if (errors) { %>
+                <small id="err" class="form-text text-muted">
+                <%= errors.description %> </small>
+            <% } %>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a id="btn-editQuestion" class="btn btn-warning" href="/showOneQuestion/<%= result._id%>">Cancel</a>
+        </form>
+    </div>
+
+    <%- include("./components/footer") %> 

@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.App {
+  width: 80%;
+  margin: auto;
+  background: lightgrey;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+}
+
+.header-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer {
+  height: 50px;
+  margin-top: 100px;
+  text-align: center;
+  color: rgb(184, 16, 44);
+}
+
+.formSignUp, .formLogIn {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+.errors {
+  color: red;
+}

@@ -1,0 +1,24 @@
+<%- include("./components/header") %>
+    
+<body>
+    
+    <%- include("./components/nav") %>
+
+    <h3 class="title"> Edit an answer </h3>
+    <div class="add-question">
+        <form form action="/editAnswer/<%=answer.id%>" method="POST">
+            <label for="desciption">Update your answer here:</label>
+            <textarea cols="80"  rows="2" name="description"><%= answer.description %></textarea>
+                <% if (errors) { %>
+                    <small id="err" class="form-text text-muted">
+                    <%= errors.description %> </small>
+                <% } %>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a id="btn-editQuestion" class="btn btn-warning" href="/showOneQuestion/<%=question.id%>">Cancel</a>
+        </form>
+    </div>
+
+    
+    <%- include("./components/footer") %>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="/style.css">
+        <title>Login</title>
+    </head>
+<body>
+    <%- include("./components/nav") %>
+
+  <div class="loginContainer">
+      <form class="formLogIn" action="/login" method="POST">
+          <h2>Login</h2>
+          
+          <label for="email">Email</label>
+          <input type="text" value="<%=userInput.email%>" name="email" placeholder="Please write your email"  />
+          <% if (errors.email) { %>
+            <small class="error-msg"><%=errors.email%></small>
+        <% } %>
+          <label for="password">Password</label>
+          <input type="password" value="<%=userInput.password%>" name="password" placeholder="Please write your password"  />
+          <% if (errors.password) { %>
+            <small class="error-msg"><%=errors.password%></small>
+        <% } %>
+          <br>
+          <a href="/signup">Sign up</a>
+          <button class="btn-info" type="submit">Login</button>
+      </form>
+      <div class="imgLogIn">
+          <img src="banner-2.png" alt="SignIn image" height="450px">
+      </div>
+  </div>
+  <%- include("./components/footer") %>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<%- include("./components/header") %>
+    
+<body>
+    
+    <%- include("./components/nav") %>
+   
+    <div class="addQuestionTitle">
+      <h3>There are <span style="color:crimson"><%= result.length%></span> question(s)</h3>
+      <img src="hand-pointer2.jpg" width="70px" height="30px" alt="">
+      <a class="btn btn-success" href="/addQuestion">Add question</a>
+    </div>
+
+    <div class="home-img">
+      <img src="Homepage_img.png" alt="Homepage image" width="600px" height="300px"> 
+  </div>
+
+    <% if (result.length > 0 ) { %>
+        <% result.forEach (result => {%>
+          <div class="cardsContainer">
+              <div class="card cardHover">
+                <div class="card-body ">
+                  <h3 class="card-title card-title-question-home"><%= result.question.question %></h3>
+                      <h6 class="card-subtitle mb-2 text-muted card-text content"><%= result.question.description %></h6>
+                      <div id="created-info">
+                        <p><strong>Created by: </strong><%= result.question.user_id.username %></p>
+                        <p><strong>Created date: </strong><%=moment(result.question.createdAt).format('MMMM Do YYYY, h:mm a') %></p>
+                      </div>
+                      <p class="countAnswer"><span style="color:red"><%= result.answerNum%></span> answer(s)</p>
+                      <a class="seeMore" href=/showOneQuestion/<%= result.question.id %> >See more</a>
+                </div>
+              </div>
+            </div>    
+            <% } )%>
+    <% } else { %>
+      <p>There are no question to display...</p>
+    <% } %>
+
+    <%- include("./components/footer") %>
+</body>
+</html>

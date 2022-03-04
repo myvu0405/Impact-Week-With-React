@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="/style.css">
+        <title><%- pageTitle %></title>
+    </head>
+  
+<body>
+  <%- include("./components/nav") %>
+  <!-- <a href=""><img src="bin.png" alt=""></a> -->
+  <a href="/questions" class="btn btn-info btnBackQuestion">Back</a>
+  <div class="showOneContainer">
+    <div class="card" id="cardShowOne">
+      <div class="card-body content">
+        <h3 class="titleShowOne card-title"><%= result.question %></h3>
+        <p class="card-textOneQuestion"><%= result.description %></p>
+        <div class="createInfoBtn-Question">
+            <div class="created-info-showOne">
+              <p><strong>Created by: </strong><%= result.user_id.username %></p>
+              <p><strong>Created date: </strong><%=moment(result.createdAt).format('MMMM Do YYYY, h:mm a') %></p>
+              <p><strong>Updated date: </strong><%=moment(result.updatedAt).format('MMMM Do YYYY, h:mm a') %></p>
+            </div>
+            <div class="edit-delete-question">
+              <% if (result.user_id.id == locals.user.id){ %>
+                <a class="btn btn-info btn-sm" href=/editQuestion/<%= result.id %> >Edit question</a>
+                <a class="btn btn-danger btn-sm btnEditDelQuestion" href=/deleteQuestion/<%= result.id %> >Delete question</a>
+              <% } %>
+            </div>
+        </div>
+
+        <!-- input & submit answer -->
+        <form action="/addAnswer" method="POST" class="answerForm">
+            <label>Add your answer: </label>
+            <input type="text" id="fieldAnswer" name="answer" placeholder="Enter answer">
+            <button class="btn btn-success btn-sm answerButton">Answer</button>
+            
+            <% if (errors) { %>
+              <small id="err" class="form-text text-muted">
+              <%= errors.description %> </small>
+            <% } %>
+            <input type="hidden" name='question_id' value="<%=result.id%>">
+            <input type="hidden" name='user_id' value="<%=locals.user.id%>">
+        </form>
+
+        <!-- Display answer -->
+        <% if(answers.length > 0){ %>
+          <small>There are currently <%= answers.length%> answer(s) to this question.</small>
+            <% answers.forEach (answer => { %>
+              <div class="showAnswer">
+                <p class="card-textOneQuestion"><%= answer.description %></p>
+                <div class="createdInfo-Answer">
+                    <div>
+                      <p style="font-style: italic; font-size: 10px; margin-bottom: 1px;"><strong>Created at: </strong> <%=moment(answer.createdAt).format('MMMM Do YYYY, h:mm a') %></p>
+                      <p style="font-style: italic; font-size: 10px;"><strong>Updated at:</strong> <%= moment(answer.updatedAt).format('MMMM Do YYYY, h:mm a') %></p>
+                    </div>
+                    <p style="color:blue; font-style: italic;"><strong>Answer by:</strong> <%= answer.user_id.username %></p>
+                </div>
+                <div class="g-btnEditDelAnswer">
+                    <% if(answer.user_id.id == locals.user.id) {%>
+                      <form method="POST" action="/editAnswer/<%=answer._id%>" >
+                        <a class="btn btn-info btn-sm btnEditDelAnswer" href=/editAnswer/<%= answer.id %> >Edit answer</a>
+                      </form>
+                    <% } %>
+                    <% if (result.user_id.id == locals.user.id || answer.user_id.id == locals.user.id){ %>
+                    <a class="btn btn-danger btn-sm btnEditDelAnswer" href=/deleteAnswer/<%= answer.id %> >Delete answer</a>
+                    <% } %>
+                </div>
+              </div>
+            <% }) %>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+  <%- include("./components/footer.ejs") %>
+
+</body>
+</html>

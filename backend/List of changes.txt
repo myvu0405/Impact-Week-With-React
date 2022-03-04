@@ -1,0 +1,10 @@
+1. maincontroller.js
+2. home.ejs
+3. usercontroller.js
+4. signUp.ejs
+5. login.ejs
+
+//check permission changes:
+6. authMiddleWare.js
+7.questioncontroller.js
+8.answercontroller.js

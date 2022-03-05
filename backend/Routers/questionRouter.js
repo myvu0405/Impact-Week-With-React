@@ -3,6 +3,8 @@ const questionRouter = express.Router();
 const controller = require('../controllers/questionController')
 const {isLoggedIn } = require('../middleWares/authMiddleWare')
 
+questionRouter.get('/questions', protectedRoute, controller.getQuestions)
+
 questionRouter.all('/addQuestion', isLoggedIn, controller.addQuestion)
 
 questionRouter.get('/showOneQuestion/:id', isLoggedIn, controller.showOneQuestion)

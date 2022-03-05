@@ -76,4 +76,34 @@ const checkPermission = async (user,objectType, object,action='') =>{
 }
 //----------------------------------------------------------------------------------
 
-module.exports = { checkUser, isLoggedIn,checkPermission}
+//MV: new function to check authorization with JWT sent along with request
+const protectedRoute = async(req,res,next) => {
+
+    let token ;
+    //check Header of the object Authorization from http request
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            //get token from headers
+            token = req.headers.authorization.split(' ')[1];
+            //verify the token
+            const decoded = jwt.verify(token,'Group7');
+            //get the user from the token payload
+            req.user= await User.findById(decoded.id).select('-password');
+
+            next();
+
+        } catch (error) {
+            console.log(error);
+            res.status(401).send('Not authorized!');
+            // throw new Error('Not authorized!');
+        }
+    }
+
+    if(!token){
+        res.status(401).send('Not authorized, no token!');
+        // throw new Error('Not authorized, no token!');
+    }
+
+}
+
+module.exports = { checkUser, isLoggedIn,checkPermission,protectedRoute}

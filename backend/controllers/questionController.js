@@ -7,6 +7,15 @@ const {checkPermission} = require ('../middleWares/authMiddleWare');
 
 const mongoose = require('mongoose');
 
+//MV added: 
+//function to get all questions
+//route (protected): /all-questions
+const getQuestions = async (req,res) => {
+    const questions = await Question.find();
+    if (questions) res.status(200).send(questions)
+    else res.status(500).send('Error happened: Please try again later!')
+}
+
 const addQuestion = async (req,res) => {
     if (req.method === 'GET') {
         let newQuestion={question:'',description:''};
@@ -153,6 +162,7 @@ const editQuestion = async (req, res) => {
 }
 
 module.exports = {
+    getQuestions,
     addQuestion,
     showOneQuestion,
     delQuestion,

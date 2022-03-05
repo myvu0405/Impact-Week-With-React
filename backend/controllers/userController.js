@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 // create JWT Token
 const maxAge = 3 * 24 * 60 * 60;
-const createJwtToken = async (id) => await jwt.sign({id}, 'Group7', {expiresIn: maxAge})
+const createJwtToken = async (id,username,email) => await jwt.sign({id,username,email}, 'Group7', {expiresIn: maxAge})//MV: added username and email to sign the toke
 
 const logInFunc = async (req, res) => {
     
@@ -46,18 +46,11 @@ const logInFunc = async (req, res) => {
         else {
                 const user = await userModel.findOne( {email: req.body.email} );
 
-                const token = await createJwtToken(user.id);
+                const token = await createJwtToken(user.id,user.username,user.email);//MV added username and email to sign the toke
                 
-                const username = user.username;
-
-                const userInfo = {username, token}
-                
-                console.log(userInfo);
                 // res.cookie('jwtToken', token, {httpOnly: true, maxAge: maxAge * 1000})
                 // res.redirect('/questions');
-                // console.log(user);
-                res.status(200).send(userInfo);
-                // res.status(200).send(token);
+                res.status(200).send(token);
         }
         
     /*}*/
@@ -116,7 +109,7 @@ const signUpFunc = async (req, res) => {
                     res.status(200).send('User was registered!');
                 })
                 .catch(err =>{
-                    // console.log(err);
+                    //console.log(err);
                     res.status(500).send(err);
 
                 })

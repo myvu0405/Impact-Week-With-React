@@ -9,14 +9,14 @@ import { Link } from 'react-router-dom';
 // import moment from 'moment'
 
 
-function Homepage(props) {
-  // const currentToken = localStorage.getItem('user')
-  // console.log(currentToken);
-  console.log(props)
+function Homepage() {
+
+  const currentToken = localStorage.getItem('user')
+
   return (
     <div>
        <div>
-        <Header user={props.user}/>
+        <Header token={currentToken}/>
         <div className="addQuestionTitle">
           <h3>There are <span>1</span> question(s)</h3>
           <img src={handPointer}  alt="" />

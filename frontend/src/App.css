@@ -17,16 +17,23 @@ body{
   padding: 20px;
   margin-bottom: 30px;
 }
-.header-nav{
+/* .header-nav{
   display: flex;
   justify-content: space-evenly;
   gap: 30px;
   margin-top: 15px;
-}
+} */
 .project-info {
   font-size: 40px;
   margin-top: 10px;
   color: black
+}
+.logout{
+  display: inline-flex;
+  font-weight: 500;
+}
+.logout > p {
+  margin-right: 150px;
 }
 .btn-info:hover, .btn-primary:hover, .btn-success:hover{
   color: black;

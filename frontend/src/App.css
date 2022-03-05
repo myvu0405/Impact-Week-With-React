@@ -26,10 +26,15 @@
   color: rgb(184, 16, 44);
 }
 
-.formSignUp, .formLogIn {
+.formSignUp, .formLogIn, .question {
   display: flex;
   flex-direction: column;
   width: 60%;
+}
+.question {
+  margin-top:20px;
+  border: 1px royalblue solid;
+  border-radius: 5px;
 }
 .errors {
   color: red;

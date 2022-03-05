@@ -37,6 +37,6 @@ app.use(cors( {
 // routers
 app.all('*' , checkUser);
 // app.use(questionRouter, userRouter, mainRouter, answerRouter);
-app.use(userRouter);
+app.use(userRouter,questionRouter);
 
 app.listen(5000, () => console.log('Connected to port 5000 ...'));

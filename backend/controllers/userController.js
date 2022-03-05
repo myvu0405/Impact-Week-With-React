@@ -48,9 +48,16 @@ const logInFunc = async (req, res) => {
 
                 const token = await createJwtToken(user.id);
                 
+                const username = user.username;
+
+                const userInfo = {username, token}
+                
+                console.log(userInfo);
                 // res.cookie('jwtToken', token, {httpOnly: true, maxAge: maxAge * 1000})
                 // res.redirect('/questions');
-                res.status(200).send(token);
+                // console.log(user);
+                res.status(200).send(userInfo);
+                // res.status(200).send(token);
         }
         
     /*}*/
@@ -109,7 +116,7 @@ const signUpFunc = async (req, res) => {
                     res.status(200).send('User was registered!');
                 })
                 .catch(err =>{
-                    //console.log(err);
+                    // console.log(err);
                     res.status(500).send(err);
 
                 })

@@ -1,36 +1,56 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-.App {
-  width: 80%;
-  margin: auto;
-  background: lightgrey;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  height: 100px;
+body{
+  background-color: #f7f3f0;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
 }
 
-.header-links {
+.header > div > p {
+  color: blue;
+  font-style: italic;
+}
+.header{
+  background-image: url('./components/Images/bg3.jpg');
+  color: white;
   display: flex;
   justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+.header-nav{
+  display: flex;
+  justify-content: space-evenly;
   gap: 30px;
+  margin-top: 15px;
 }
-
-.footer {
-  height: 50px;
-  margin-top: 100px;
-  text-align: center;
-  color: rgb(184, 16, 44);
+.project-info {
+  font-size: 40px;
+  margin-top: 10px;
+  color: black
 }
-
-.formSignUp, .formLogIn {
-  display: flex;
-  flex-direction: column;
-  width: 60%;
+.btn-info:hover, .btn-primary:hover, .btn-success:hover{
+  color: black;
+  /* font-weight: 500; */
+  background-color:turquoise;
+  border: none;
+  transform: scale(1.1);
 }
-.errors {
-  color: red;
+.btn-danger:hover, .btn-warning:hover{
+  color: black;
+  background-color: orangered;
+  transform: scale(1.1);
+}
+.btn-warning:hover{
+  color: black;
+  background-color:rgb(230, 230, 42);
+  transform: scale(1.1);
+}
+#btn-editQuestion{
+  margin: 30px 0 0 110px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: 600;
+}
+.errors{
+  color:red;
 }

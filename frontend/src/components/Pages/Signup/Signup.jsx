@@ -1,6 +1,10 @@
+import "./Signup.css";
 import React, { Component } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import signup_img from '../../Images/signup.jpg'
+import Header from '../../Layout/Header'
+
 
 const defaultUser = {
     username:'',
@@ -41,10 +45,9 @@ export default class Signup extends Component {
         e.preventDefault();
         axios.post('http://localhost:5000/signup', this.state.user)
             .then( res => {
-
                 this.setState({
                     result:res.data,
-                    errors:defaultErrors,
+                    // errors:defaultErrors,
                     redirect:true   //to redirect to login page when registering is successful
                 })
             })
@@ -56,14 +59,14 @@ export default class Signup extends Component {
     }
     render() {
         const {user,errors,result,redirect} = this.state;
+        // console.log(errors);
         return (
         <div>
-            <h2>This is signup page</h2>
+            <Header />
 
             <div className="signUpContainer">
                 <form className="formSignUp" onSubmit={this.handleSignup}>
-                    <h3>Sign up form</h3>
-                    
+                    <h2>Sign up</h2>
                     <label >Username</label>
                     <input type="text" value={user.username} name="username" onChange={this.setupUserData} placeholder="Please write your username"/>
                     {errors.username && <small className='errors'>{errors.username}</small>}
@@ -82,8 +85,10 @@ export default class Signup extends Component {
 
                     <button className="btn-info" type="submit">Sign up</button>
                 </form>
+                <div className="imgSignUp">
+                    <img src={signup_img} alt="SignUp_image" />
+                 </div>
             </div>
-            {result && <p>{result}</p>}
             {redirect && <Navigate to='/login' replace={true} />}
         </div>
         )

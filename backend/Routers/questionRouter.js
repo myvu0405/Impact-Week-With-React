@@ -1,7 +1,7 @@
 const express = require('express')
 const questionRouter = express.Router();
 const controller = require('../controllers/questionController')
-const {isLoggedIn } = require('../middleWares/authMiddleWare')
+const {isLoggedIn, protectedRoute } = require('../middleWares/authMiddleWare')
 
 questionRouter.get('/questions', protectedRoute, controller.getQuestions)
 

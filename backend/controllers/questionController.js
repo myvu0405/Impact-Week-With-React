@@ -16,29 +16,37 @@ const getQuestions = async (req,res) => {
     else res.status(500).send('Error happened: Please try again later!')
 }
 
+//add new question:
+//route (protected): /addQuestion
 const addQuestion = async (req,res) => {
+    /*
     if (req.method === 'GET') {
         let newQuestion={question:'',description:''};
         res.render('addQuestion', {newQuestion,errors: null, pageTitle: 'Add question'}); 
     }
-    if (req.method === 'POST') {
-            const id = res.locals.user.id;
-            const user = await User.findById(id);
+    if (req.method === 'POST') {*/
+            //const id = res.locals.user.id;
+            // const user = await User.findById(id);
+            //MY updated:
+            const user=req.user;
+
             let newQuestion = new Question(req.body);
             newQuestion.user_id = user;
             
             newQuestion.save()
                 .then( () => {
                     
-                    res.redirect('/questions');
+                    // res.redirect('/questions');
+                    res.status(200).send('New question was added successfully.')
                 })
                 .catch( err => 
                 {
                     const errors = handlerError(err);
                     
-                    res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
+                    // res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
+                    res.status(400).send(errors)
                 })
-    } 
+    /*} */
 }
 
 //Function to show question detail along with its answers
@@ -53,14 +61,24 @@ const showOneQuestion = async (req, res) => {
                 //Find all answers belong to the selected question
                 Answer.find({question_id:result}).populate('question_id').populate('user_id').sort({updatedAt: -1})
                     .then(answers => {
-                        res.render('showOneQuestion', {result, answers,errors:null,pageTitle: 'Question detail'});
+                        // res.render('showOneQuestion', {result, answers,errors:null,pageTitle: 'Question detail'});
+                        res.status(200).send({result,answers});
                     })                
-                    .catch(err => res.render('error',{error:'Oop... record your want to find does not exist!'})) 
+                    .catch(err => {
+                        // res.render('error',{error:'Oop... record your want to find does not exist!'})
+                        res.status(500).send(err);
+                    } )
         }
                 
-        else res.render('error',{error:'Oop... record your want to find does not exist!'})}  
+        else {
+            // res.render('error',{error:'Oop... record your want to find does not exist!'}) 
+            res.status(400).send('Oop... record your want to find does not exist!')
+        }
+    }
     catch(err) {
-        res.render('error',{error:'Oop... record your want to find does not exist!'});
+        // res.render('error',{error:'Oop... record your want to find does not exist!'});
+        res.status(400).send('Oop... record your want to find does not exist!')
+
     }      
             
 }

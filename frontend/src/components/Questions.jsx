@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
-// import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Questions() {
 
     const [questions, setQuestions]=useState([]);
     const [error, setError] = useState('');
-    // const [redirect, setRedirect] = useState(false);
 
     const navigate= useNavigate();
 
@@ -26,13 +24,7 @@ export default function Questions() {
 
         const token=localStorage.getItem('user');
         if(token) {
-            // const user=jwt.decode(token);
-            // if(!user) {
-            //     localStorage.removeItem('user');
-            //     window.location.href=('/');
-            //     // useNavigate('/');
-            // }
-            // else getQuestions(token);
+            
             getQuestions(token);
         }
         else {
@@ -43,12 +35,18 @@ export default function Questions() {
     return (
         <div>
             <h3>Questions dashboard</h3>
+            <h4>There are currently {questions.length} question(s)</h4>
+            
+            <h4><Link to='/new-question'>Add a new questions</Link></h4>
+
             {questions.length>0 && ( questions.map( (question, index) => 
                 (<div key={index} className='question'>
                     <label>Question: {question.question}</label>
                     <label >Description: {question.description}</label>
                     <label >Created at: {question.createdAt}</label>
                     <label >Last updated at: {question.updatedAt}</label>
+                    
+                    <Link to={`/one-question/${question._id}`}>See more</Link>
                 </div>)))}
             
             {error && <p className='errors'>{error}</p>}

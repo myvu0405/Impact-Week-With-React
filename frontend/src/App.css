@@ -26,7 +26,7 @@
   color: rgb(184, 16, 44);
 }
 
-.formSignUp, .formLogIn, .question {
+.formSignUp, .formLogIn, .question, .formAddQuestion {
   display: flex;
   flex-direction: column;
   width: 60%;

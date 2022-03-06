@@ -11,34 +11,34 @@ const mongoose = require('mongoose');
 //function to get all questions
 //route (protected): /all-questions
 const getQuestions = async (req,res) => {
-    const questions = await Question.find();
+    const questions = await Question.find().populate('user_id').sort({createdAt: -1});
     if (questions) res.status(200).send(questions)
     else res.status(500).send('Error happened: Please try again later!')
 }
 
 const addQuestion = async (req,res) => {
-    if (req.method === 'GET') {
-        let newQuestion={question:'',description:''};
-        res.render('addQuestion', {newQuestion,errors: null, pageTitle: 'Add question'}); 
-    }
-    if (req.method === 'POST') {
-            const id = res.locals.user.id;
-            const user = await User.findById(id);
-            let newQuestion = new Question(req.body);
-            newQuestion.user_id = user;
-            
-            newQuestion.save()
-                .then( () => {
-                    
-                    res.redirect('/questions');
-                })
-                .catch( err => 
-                {
-                    const errors = handlerError(err);
-                    
-                    res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
-                })
-    } 
+
+    const {id, question, description} = req.body;
+
+    const user = await User.findById(id);
+    let newQuestion = new Question({
+        question,
+        description,
+        user_id: user
+    });
+    console.log(newQuestion);
+    await newQuestion.save()
+        .then( result => {
+            res.send(result)
+            // res.redirect('/questions');
+        })
+        .catch( err => 
+        {
+            const errs = handlerError(err);
+            res.send(errs);
+            // res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
+        })
+    // } 
 }
 
 //Function to show question detail along with its answers

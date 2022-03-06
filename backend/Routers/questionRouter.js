@@ -5,7 +5,7 @@ const {isLoggedIn, protectedRoute } = require('../middleWares/authMiddleWare')
 
 questionRouter.get('/questions', protectedRoute, controller.getQuestions)
 
-questionRouter.all('/addQuestion', isLoggedIn, controller.addQuestion)
+questionRouter.all('/addQuestion', protectedRoute, controller.addQuestion)
 
 questionRouter.get('/showOneQuestion/:id', isLoggedIn, controller.showOneQuestion)
 

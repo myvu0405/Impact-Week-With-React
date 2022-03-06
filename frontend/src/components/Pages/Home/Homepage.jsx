@@ -19,7 +19,7 @@ function Homepage() {
       axios.get(`http://localhost:5000/questions`, {
           headers: { 'Authorization': `Bearer ${token}` }
           })
-          .then(res => { console.log(res.data)
+          .then(res => { 
               setQuestions(res.data);
           })
           .catch(err=> {
@@ -34,7 +34,7 @@ function Homepage() {
     else {
       navigate('/login');
     }
-  },[navigate]);
+  },[]);
 
   return (
     <div>

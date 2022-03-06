@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const questionSchema = new Schema( {
     question :{
         type:String,
-        required:[true, 'Please enter you question.'],
+        required:[true, 'Please enter your question.'],
         minlength: [5, 'Minimum question length must be 5.']
     },
     description :{

@@ -7,9 +7,9 @@ questionRouter.get('/questions', protectedRoute, controller.getQuestions)
 
 questionRouter.all('/addQuestion', protectedRoute, controller.addQuestion)
 
-questionRouter.get('/showOneQuestion/:id', isLoggedIn, controller.showOneQuestion)
+questionRouter.get('/showOneQuestion/:id', protectedRoute, controller.showOneQuestion)
 
-questionRouter.get('/deleteQuestion/:id', isLoggedIn, controller.delQuestion)
+questionRouter.get('/deleteQuestion/:id', protectedRoute, controller.delQuestion)
 
 questionRouter.all('/editQuestion/:id', isLoggedIn, controller.editQuestion)
 

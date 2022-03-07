@@ -2,63 +2,71 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../../Layout/Header'
-import jwt_decode from 'jwt-decode'; 
-import { Navigate  } from "react-router-dom";
+// import jwt_decode from 'jwt-decode'; 
+import { useNavigate } from 'react-router-dom';
 import './AddQuestion.css'
 
 function AddQuestion() {
 
- const [question, setQuestion] = useState('');
- const [description, setDescription] = useState('');
- const [redirect, setRedirect] = useState(false)
- const [errors, setErrors] = useState({
-  question: '',
-  description: '',  
-})
+  const [question, setQuestion] = useState({question:'', description:''});
+  const [errors, setErrors] = useState({question:'', description:''});
+  const [result, setResult] = useState('');
 
-const handleAddQuestion = (e) => {
-  e.preventDefault();
-  const decoded = jwt_decode(localStorage.getItem('user'));
-  const id = decoded.id;
+  const navigate= useNavigate();
 
-  const data = {question, description, id};
-  // console.log('Value', data, question, description);
-  axios.post('http://localhost:5000/addQuestion', data)
-  .then(res => { 
-    if(res.data.question == "Please enter your question." || res.data.question == "Minimum question length must be 5." 
-      || res.data.description == "Please enter your description." || res.data.description == "Minimum length of description must be 5."
-      ) { 
-          setErrors(res.data);
-          setRedirect(false);
-    } else {
-    setQuestion('');
-    setDescription('');
-    setRedirect(true);
-    }
-   })
-  .catch(err => { 
-    console.log(err);
-  })
+  useEffect( () =>{
+      //check if user logged in, if not navigate to homepage
+      const token=localStorage.getItem('user');
+      if(!token) {
+          
+          navigate('/');
+      }       
+  },[navigate]);
 
-}
+  const setQuestionData = ({target}) => {
+      setQuestion({...question, [target.name]:target.value});
+  }
+
+  const addNewQuestion = (e) => {
+      e.preventDefault();
+      const token=localStorage.getItem('user');
+      //send a post request to add a new question
+      axios.post(`http://localhost:5000/addQuestion`, question, {
+          headers: { 'Authorization': `Bearer ${token}` }
+          })
+          .then(res => {
+            console.log(res);
+              setResult(res.data);
+              setErrors({question:'', description:''});
+              navigate('/questions');
+
+          })
+          .catch(err=> {
+            console.log(err);
+              setErrors(err.response.data);
+              setResult('Add new question failed.')
+          })
+
+  }
+
+ 
   return (
     <div>
       <Header />
       <h3 className="title"> Add question </h3>
       <div className="add-question">
-          <form className="form" onSubmit={handleAddQuestion}>
+          <form className="form" onSubmit={addNewQuestion}>
           <label>Question:</label>
-              <input type="text" id="title" name="question" onChange={e => setQuestion(e.target.value)} placeholder="Enter question" />
+              <input type="text" id="title" name="question" value={question.question} onChange={setQuestionData} placeholder="Enter question" />
               {errors.question && <small className='errors'>{errors.question}</small>}
               <label>Description:</label>
-              <textarea  name="description" onChange={e => setDescription(e.target.value)} placeholder="Enter description"></textarea>
+              <textarea  name="description" value={question.description} onChange={setQuestionData} placeholder="Enter description"></textarea>
               {errors.description && <small className='errors'>{errors.description}</small>}
               <br />
               <button type="submit" className="btn btn-primary">Submit</button>
               <Link className="btn btn-warning btn-CancelQuestion" to="/questions">Cancel</Link>
           </form>
       </div>
-      {redirect && <Navigate to='/' replace={true} />}
     </div>
   )
 }

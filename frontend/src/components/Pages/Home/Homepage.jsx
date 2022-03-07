@@ -60,7 +60,7 @@ function Homepage() {
                         <p><strong>Created date: </strong>{moment(result.createdAt).format('MMMM Do YYYY, h:mm a')}</p>
                       </div>
                       <p className="countAnswer"><span></span> answer(s)</p>
-                      <Link className="seeMore" to="/showOneQuestion" >See more</Link>
+                      <Link className="seeMore" to={`/showOneQuestion/${result._id}`} >See more</Link>
                 </div>
               </div>
             </div>  

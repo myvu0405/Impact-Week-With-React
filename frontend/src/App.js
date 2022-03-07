@@ -21,7 +21,7 @@ function App() {
           <Route path="/addQuestion" element={<AddQuestion/>} />
           <Route path="/editQuestion" element={<EditQuestion/> }/>
           <Route path="/editAnswer" element={<EditAnswer/> } />
-          <Route path="/ShowOneQuestion" element={<ShowOneQuestion/>} />
+          <Route path="/ShowOneQuestion/:id" element={<ShowOneQuestion/>} />
         </Routes>      
         {/* <Footer/> */}
       </BrowserRouter>

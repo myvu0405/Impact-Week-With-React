@@ -16,29 +16,37 @@ const getQuestions = async (req,res) => {
     else res.status(500).send('Error happened: Please try again later!')
 }
 
+//add new question:
+//route (protected): /addQuestion
 const addQuestion = async (req,res) => {
+    /*
+    if (req.method === 'GET') {
+        let newQuestion={question:'',description:''};
+        res.render('addQuestion', {newQuestion,errors: null, pageTitle: 'Add question'}); 
+    }
+    if (req.method === 'POST') {*/
+            //const id = res.locals.user.id;
+            // const user = await User.findById(id);
+            //MY updated:
+            const user=req.user;
 
-    const {id, question, description} = req.body;
-
-    const user = await User.findById(id);
-    let newQuestion = new Question({
-        question,
-        description,
-        user_id: user
-    });
-    console.log(newQuestion);
-    await newQuestion.save()
-        .then( result => {
-            res.send(result)
-            // res.redirect('/questions');
-        })
-        .catch( err => 
-        {
-            const errs = handlerError(err);
-            res.send(errs);
-            // res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
-        })
-    // } 
+            let newQuestion = new Question(req.body);
+            newQuestion.user_id = user;
+            
+            newQuestion.save()
+                .then( () => {
+                    
+                    // res.redirect('/questions');
+                    res.status(200).send('New question was added successfully.')
+                })
+                .catch( err => 
+                {
+                    const errors = handlerError(err);
+                    
+                    // res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
+                    res.status(400).send(errors)
+                })
+    /*} */
 }
 
 //Function to show question detail along with its answers
@@ -53,31 +61,43 @@ const showOneQuestion = async (req, res) => {
                 //Find all answers belong to the selected question
                 Answer.find({question_id:result}).populate('question_id').populate('user_id').sort({updatedAt: -1})
                     .then(answers => {
-                        res.render('showOneQuestion', {result, answers,errors:null,pageTitle: 'Question detail'});
+                        // res.render('showOneQuestion', {result, answers,errors:null,pageTitle: 'Question detail'});
+                        // console.log(result);
+                        const username = result.user_id.username;
+                        // res.status(200).send(result.user_id.username)
+                        res.status(200).send({result,answers, username});
                     })                
-                    .catch(err => res.render('error',{error:'Oop... record your want to find does not exist!'})) 
+                    .catch(err => {
+                        // res.render('error',{error:'Oop... record your want to find does not exist!'})
+                        res.status(500).send(err);
+                    } )
         }
                 
-        else res.render('error',{error:'Oop... record your want to find does not exist!'})}  
+        else {
+            // res.render('error',{error:'Oop... record your want to find does not exist!'}) 
+            res.status(400).send('Oop... record your want to find does not exist!')
+        }
+    }
     catch(err) {
-        res.render('error',{error:'Oop... record your want to find does not exist!'});
+        // res.render('error',{error:'Oop... record your want to find does not exist!'});
+        res.status(400).send('Oop... record your want to find does not exist!')
+
     }      
             
 }
 
-//Delete one question
+// Delete one question
 
 const delQuestion = async (req, res) => {
-
+    console.log(req.user);
     //Checking if the question exists in the db...
     try {
         const question= await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
         if (question) { //If question exists
-
-            const check= await checkPermission(res.locals.user, 'question', question);
+            const check= await checkPermission(req.user, 'question', question);
             if (!check) {//If user does not have right to delete
-                
-                res.render('error',{error:'You do not have permission to delete this question!'});
+                res.send('You do not have permission to delete this question!')
+                // res.render('error',{error:'You do not have permission to delete this question!'});
             }
             else {
                 //=============================================
@@ -86,19 +106,30 @@ const delQuestion = async (req, res) => {
                             
                             //find all answers belong to the question and delete them
                             Answer.deleteMany({question_id: mongoose.Types.ObjectId(req.params.id)})
-                                .then(() => {
-                                    res.redirect('/questions');
+                                .then((result) => {
+                                    res.status(200).send('Question was deleted')
+                                    // res.redirect('/questions');
                                 })
-                                .catch(err => console.log(err))
+                                .catch(err => {
+                                    res.status(400).send(err);
+                                    // console.log(err)
+                                })
                             
                         })
-                        .catch( err => console.log(err)) 
+                        .catch( err => {
+                            res.status(500).send(err);
+                            console.log(err)
+                        }) 
                 }
         }
-        else res.render('error',{error : 'Oop... record your want to find does not exist!'});
+        else { 
+            res.send('Oop... record your want to find does not exist!');
+            // res.render('error',{error : 'Oop... record your want to find does not exist!'});
+        }
     }
     catch(error) {
-        res.render('error',{error : 'Oop... record your want to find does not exist!'});
+        res.status(505).send('Oop... record your want to find does not exist!')
+        // res.render('error',{error : 'Oop... record your want to find does not exist!'});
     }
 }
 

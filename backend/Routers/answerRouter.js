@@ -2,12 +2,14 @@
 const express = require('express');
 const answerRouter = express.Router();
 const controller = require('../controllers/answerController');
-const {isLoggedIn } = require('../middleWares/authMiddleWare');
+const {isLoggedIn, protectedRoute } = require('../middleWares/authMiddleWare');
 
-answerRouter.post('/addAnswer', isLoggedIn, controller.addAnswer);
+answerRouter.post('/addAnswer', protectedRoute, controller.addAnswer);
 
-answerRouter.get('/deleteAnswer/:id', isLoggedIn, controller.delAnswer);
+answerRouter.delete('/deleteAnswer/:id', protectedRoute, controller.delAnswer);//MV updated method 'get' --> 'delete'
 
-answerRouter.all('/editAnswer/:id', isLoggedIn, controller.editAnswer);
+answerRouter.get('/oneAnswer/:id', protectedRoute, controller.getOneAnswer);//MV added
+
+answerRouter.put('/editAnswer/:id', protectedRoute, controller.editAnswer);//MV updated 'all' --> 'put'
 
 module.exports = answerRouter;

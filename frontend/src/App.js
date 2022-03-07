@@ -9,6 +9,7 @@ import Questions from './components/Questions'
 import NewQuestion from './components/NewQuestion'
 import OneQuestion from './components/OneQuestion'
 import EditQuestion from './components/EditQuestion'
+import EditAnswer from './components/EditAnswer';
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
           <Route path='/one-question/:id' element={<OneQuestion/>}/>
 
           <Route path='/edit-question/:id' element={<EditQuestion/>}/>
-
+          <Route path='/edit-answer/:id' element={<EditAnswer/>}/>
 
 
         </Routes>      

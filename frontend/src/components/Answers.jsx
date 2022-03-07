@@ -5,6 +5,10 @@ export default function Answers(props) {
 
     const {answers, loginUser,questionOwnerId} = props;
 
+    const deleteOneAnswer =(id) => {
+        props.onClick(id);
+    }
+
     return (
         <div>
             { answers.length>0 && answers.map( (answer,index) => (
@@ -19,10 +23,10 @@ export default function Answers(props) {
                     </div>
                     <div className="g-btnEditDelAnswer">
                         {answer.user_id._id === loginUser.id && (
-                            <Link to={`/edit-answer/answer._id`}>Edit answer</Link>
+                            <Link to={`/edit-answer/${answer._id}`}>Edit answer</Link>
                         )}
                         {(questionOwnerId === loginUser.id || answer.user_id._id ===loginUser.id) &&
-                        <button className="btn btn-danger btn-sm btnEditDelAnswer" >Delete answer</button>
+                        <button onClick={() => deleteOneAnswer(answer._id)} className="btn btn-danger btn-sm btnEditDelAnswer" >Delete answer</button>
                         }
                     </div>
                 </div>

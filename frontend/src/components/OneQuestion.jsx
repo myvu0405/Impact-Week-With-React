@@ -4,21 +4,28 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';    
 
 import Answers from './Answers';
+import AddAnswer from './AddAnswer';
 
 export default function OneQuestion() {
 
-    const [question, setQuestion] = useState(null);
-    const [answers, setAnswers] = useState([]);
-    const [error, setError] = useState('');
-    const [loginUser, setLoginUser] = useState(null);
-
     const navigate= useNavigate();
     const {id} = useParams();
+    const token=localStorage.getItem('user');
 
+    const [question, setQuestion] = useState(null);
+    const [newAnswer, setNewAnswer] = useState({description:'', question_id: id});
+
+    const [answers, setAnswers] = useState([]);
+    const [questionErrors, setQuestionErrors] = useState('');
+    const [answerErrors, setAnswerErrors] = useState('');
+    const [result, setResult] = useState('');
+
+    const [loginUser, setLoginUser] = useState(null);
+
+    
 
     useEffect( () =>{
         //check if user logged in, if not navigate to homepage
-        const token=localStorage.getItem('user');
         if(!token) {
             
             navigate('/');
@@ -32,16 +39,58 @@ export default function OneQuestion() {
             .then(res => {
                 setQuestion(res.data.result);
                 setAnswers(res.data.answers);
+
             })
             .catch(err=> {
-                setError(err.response.data);
+                setQuestionErrors(err.response.data);
             })
         }       
-    },[navigate,id]);
+    },[navigate,id,token,result]);
 
     const goBack = () => {
         navigate('/questions');
 
+    }
+
+    const setInput = ({target}) => {
+        setNewAnswer({
+            ...newAnswer,
+            [target.name]: target.value
+        });
+    }
+
+    const addNewAnswer = (e) => {
+        e.preventDefault();
+        const token=localStorage.getItem('user');
+
+        //send a post request to add a new answer
+        axios.post(`http://localhost:5000/addAnswer`, newAnswer, {
+            headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => {
+                setResult(res.data.result);
+                setAnswerErrors('');
+                setNewAnswer({
+                    ...newAnswer,
+                    description:''
+                })
+            })
+            .catch(err=> {
+                setAnswerErrors(err.response.data.description);
+                setResult('Add new answer failed.')
+            })
+    }
+
+    const deleteAnswer = (id) => {
+        axios.delete(`http://localhost:5000/deleteAnswer/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => {
+                setResult(res.data);
+            })
+            .catch(err=> {
+                setResult(err.response.data);
+            })
     }
 
     return (
@@ -49,7 +98,8 @@ export default function OneQuestion() {
             <h3>Question detail</h3>
 
             <button className="btn btn-info btnBackQuestion" onClick={goBack}>Go back</button>
-            {error && <p className='errors'>{error}</p>}
+            {questionErrors && <p className='errors'>{questionErrors}</p>}
+            
             {question && (
             <div className="showOneContainer">
                 <div className="card" id="cardShowOne">
@@ -72,15 +122,11 @@ export default function OneQuestion() {
                                 </div>
                             )}
                         </div>
+                        <AddAnswer onChange={setInput} errors={answerErrors} description={newAnswer.description} onSubmit={addNewAnswer}/>
 
-                        <form className="answerForm">
-                            <label>Add your answer: </label><br />
-                            <input type="text" id="fieldAnswer" name="answer" placeholder="Enter answer"/>
-                            <button className="btn btn-success btn-sm answerButton">Answer</button>
-                            
-                        </form>
                         <small>There are currently {answers.length} answers to this question.</small>
-                        <Answers answers={answers} loginUser={loginUser} questionOwnerId={question.user_id._id}/>   
+                        {result && <p><strong>{result}</strong></p>}
+                        <Answers onClick={ (id) => deleteAnswer(id)} answers={answers} loginUser={loginUser} questionOwnerId={question.user_id._id}/>   
 
                     </div>
                 </div>

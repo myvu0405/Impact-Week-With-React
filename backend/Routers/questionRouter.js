@@ -9,8 +9,8 @@ questionRouter.post('/addQuestion', protectedRoute, controller.addQuestion)
 
 questionRouter.get('/showOneQuestion/:id', protectedRoute, controller.showOneQuestion)
 
-questionRouter.get('/deleteQuestion/:id', isLoggedIn, controller.delQuestion)
+questionRouter.delete('/deleteQuestion/:id', protectedRoute, controller.delQuestion)
 
-questionRouter.all('/editQuestion/:id', isLoggedIn, controller.editQuestion)
+questionRouter.all('/editQuestion/:id', protectedRoute, controller.editQuestion)
 
 module.exports = questionRouter

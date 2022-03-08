@@ -81,12 +81,25 @@ export default function OneQuestion() {
             })
     }
 
-    const deleteAnswer = (id) => {
-        axios.delete(`http://localhost:5000/deleteAnswer/${id}`, {
+    const deleteAnswer = (answer_id) => {
+        axios.delete(`http://localhost:5000/deleteAnswer/${answer_id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
             })
             .then(res => {
                 setResult(res.data);
+            })
+            .catch(err=> {
+                setResult(err.response.data);
+            })
+    }
+
+    const deleteQuestion = () => {
+        axios.delete(`http://localhost:5000/deleteQuestion/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => {
+                setResult(res.data);
+                navigate('/questions');
             })
             .catch(err=> {
                 setResult(err.response.data);
@@ -117,7 +130,7 @@ export default function OneQuestion() {
                                 
                                     <Link to={`/edit-question/${question._id}`} className="btn btn-info btn-sm" >Edit question</Link>
                                     <br />
-                                    <Link to={`/delete-question/${question._id}`} className="btn btn-danger btn-sm btnEditDelQuestion" >Delete question</Link>
+                                    <button onClick={deleteQuestion} className="btn btn-danger btn-sm btnEditDelQuestion" >Delete question</button>
                                 
                                 </div>
                             )}
@@ -126,7 +139,7 @@ export default function OneQuestion() {
 
                         <small>There are currently {answers.length} answers to this question.</small>
                         {result && <p><strong>{result}</strong></p>}
-                        <Answers onClick={ (id) => deleteAnswer(id)} answers={answers} loginUser={loginUser} questionOwnerId={question.user_id._id}/>   
+                        <Answers onClick={ (answer_id) => deleteAnswer(answer_id)} answers={answers} loginUser={loginUser} questionOwnerId={question.user_id._id}/>   
 
                     </div>
                 </div>

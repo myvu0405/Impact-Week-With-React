@@ -92,10 +92,11 @@ const delQuestion = async (req, res) => {
         const question= await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
         if (question) { //If question exists
 
-            const check= await checkPermission(res.locals.user, 'question', question);
+            const check= await checkPermission(req.user, 'question', question);
             if (!check) {//If user does not have right to delete
                 
-                res.render('error',{error:'You do not have permission to delete this question!'});
+                // res.render('error',{error:'You do not have permission to delete this question!'});
+                res.status(401).send('You do not have permission to delete this question!');
             }
             else {
                 //=============================================
@@ -105,18 +106,32 @@ const delQuestion = async (req, res) => {
                             //find all answers belong to the question and delete them
                             Answer.deleteMany({question_id: mongoose.Types.ObjectId(req.params.id)})
                                 .then(() => {
-                                    res.redirect('/questions');
+                                    // res.redirect('/questions');
+                                    res.status(200).send('Deleted question successfully.')
                                 })
-                                .catch(err => console.log(err))
+                                .catch(err => {
+                                    // console.log(err);
+                                    res.status(500).send(err);
+
+                                })
                             
                         })
-                        .catch( err => console.log(err)) 
+                        .catch( err => {
+                            // console.log(err);
+                            res.status(500).send(err);
+                        
+                        }) 
                 }
         }
-        else res.render('error',{error : 'Oop... record your want to find does not exist!'});
+        else {
+            // res.render('error',{error : 'Oop... record your want to find does not exist!'});
+            res.status(400).send('Oop... record your want to find does not exist!');
+        }
     }
     catch(error) {
-        res.render('error',{error : 'Oop... record your want to find does not exist!'});
+        // res.render('error',{error : 'Oop... record your want to find does not exist!'});
+        res.status(400).send('Oop... record your want to find does not exist!');
+
     }
 }
 

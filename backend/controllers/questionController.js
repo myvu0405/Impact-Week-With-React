@@ -7,7 +7,6 @@ const {checkPermission} = require ('../middleWares/authMiddleWare');
 
 const mongoose = require('mongoose');
 
-//MV added: 
 //function to get all questions
 //route (protected): /all-questions
 const getQuestions = async (req,res) => {
@@ -19,34 +18,22 @@ const getQuestions = async (req,res) => {
 //add new question:
 //route (protected): /addQuestion
 const addQuestion = async (req,res) => {
-    /*
-    if (req.method === 'GET') {
-        let newQuestion={question:'',description:''};
-        res.render('addQuestion', {newQuestion,errors: null, pageTitle: 'Add question'}); 
-    }
-    if (req.method === 'POST') {*/
-            //const id = res.locals.user.id;
-            // const user = await User.findById(id);
-            //MY updated:
-            const user=req.user;
+   
+        const user=req.user;
 
-            let newQuestion = new Question(req.body);
-            newQuestion.user_id = user;
-            
-            newQuestion.save()
-                .then( () => {
-                    
-                    // res.redirect('/questions');
-                    res.status(200).send('New question was added successfully.')
-                })
-                .catch( err => 
-                {
-                    const errors = handlerError(err);
-                    
-                    // res.render('addQuestion', {newQuestion:req.body,errors, pageTitle: 'Add question'}); 
-                    res.status(400).send(errors)
-                })
-    /*} */
+        let newQuestion = new Question(req.body);
+        newQuestion.user_id = user;
+        
+        newQuestion.save()
+            .then( () => {
+                
+                res.status(200).send('New question was added successfully.')
+            })
+            .catch( err => 
+            {
+                const errors = handlerError(err);
+                res.status(400).send(errors)
+            })
 }
 
 //Function to show question detail along with its answers
@@ -58,25 +45,21 @@ const showOneQuestion = async (req, res) => {
         const result= await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
         if(result) {
                 
-                //Find all answers belong to the selected question
-                Answer.find({question_id:result}).populate('question_id').populate('user_id').sort({updatedAt: -1})
-                    .then(answers => {
-                        // res.render('showOneQuestion', {result, answers,errors:null,pageTitle: 'Question detail'});
-                        res.status(200).send({result,answers});
-                    })                
-                    .catch(err => {
-                        // res.render('error',{error:'Oop... record your want to find does not exist!'})
-                        res.status(500).send(err);
-                    } )
+            //Find all answers belong to the selected question
+            Answer.find({question_id:result}).populate('question_id').populate('user_id').sort({updatedAt: -1})
+                .then(answers => {
+                    res.status(200).send({result,answers});
+                })                
+                .catch(err => {
+                    res.status(500).send(err);
+                } )
         }
                 
         else {
-            // res.render('error',{error:'Oop... record your want to find does not exist!'}) 
             res.status(400).send('Oop... record your want to find does not exist!')
         }
     }
     catch(err) {
-        // res.render('error',{error:'Oop... record your want to find does not exist!'});
         res.status(400).send('Oop... record your want to find does not exist!')
 
     }      
@@ -95,41 +78,34 @@ const delQuestion = async (req, res) => {
             const check= await checkPermission(req.user, 'question', question);
             if (!check) {//If user does not have right to delete
                 
-                // res.render('error',{error:'You do not have permission to delete this question!'});
                 res.status(401).send('You do not have permission to delete this question!');
             }
             else {
-                //=============================================
-                    Question.findByIdAndDelete(req.params.id)
-                        .then( () => {
-                            
-                            //find all answers belong to the question and delete them
-                            Answer.deleteMany({question_id: mongoose.Types.ObjectId(req.params.id)})
-                                .then(() => {
-                                    // res.redirect('/questions');
-                                    res.status(200).send('Deleted question successfully.')
-                                })
-                                .catch(err => {
-                                    // console.log(err);
-                                    res.status(500).send(err);
-
-                                })
-                            
-                        })
-                        .catch( err => {
-                            // console.log(err);
-                            res.status(500).send(err);
+                Question.findByIdAndDelete(req.params.id)
+                    .then( () => {
                         
-                        }) 
-                }
+                        //find all answers belong to the question and delete them
+                        Answer.deleteMany({question_id: mongoose.Types.ObjectId(req.params.id)})
+                            .then(() => {
+                                res.status(200).send('Deleted question successfully.')
+                            })
+                            .catch(err => {
+                                res.status(500).send(err);
+
+                            })
+                        
+                    })
+                    .catch( err => {
+                        res.status(500).send(err);
+                    
+                    }) 
+            }
         }
         else {
-            // res.render('error',{error : 'Oop... record your want to find does not exist!'});
             res.status(400).send('Oop... record your want to find does not exist!');
         }
     }
     catch(error) {
-        // res.render('error',{error : 'Oop... record your want to find does not exist!'});
         res.status(400).send('Oop... record your want to find does not exist!');
 
     }
@@ -170,16 +146,16 @@ const editQuestion = async (req, res) => {
                 }
                 else {
                 
-                        result.question = req.body.question;
-                        result.description = req.body.description;
-                        result.save() 
-                        .then((result) => {
-                            res.redirect(`/showOneQuestion/${req.params.id}`); 
-                        }) 
-                        .catch(err => {
-                            const errors = handlerError(err);
-                            res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
-                        })
+                    result.question = req.body.question;
+                    result.description = req.body.description;
+                    result.save() 
+                    .then((result) => {
+                        res.redirect(`/showOneQuestion/${req.params.id}`); 
+                    }) 
+                    .catch(err => {
+                        const errors = handlerError(err);
+                        res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
+                    })
                 }
                     
             }

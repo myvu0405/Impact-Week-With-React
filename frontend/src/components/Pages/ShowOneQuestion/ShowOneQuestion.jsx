@@ -13,7 +13,7 @@ function ShowOneQuestion() {
   const [error, setError] = useState('');
   const [loginUser, setLoginUser] = useState(null);
 
-  const [newAnswer, setNewAnswer] = useState({description:'', question_id: id});
+  // const [newAnswer, setNewAnswer] = useState({description:'', question_id: id});
   const [answers, setAnswers] = useState([]);
 
   const navigate= useNavigate();

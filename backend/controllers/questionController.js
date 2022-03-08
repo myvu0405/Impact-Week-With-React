@@ -144,100 +144,42 @@ const editGetQuestion = async (req, res) => {
         // res.render('error', {error: 'Oop... record your want to find does not exist!'});
         res.status(400).send('Oop... record your want to find does not exist!');
     } else {
-        res.send(result);
-        // const check=await checkPermission(res.user, 'question', result);
-        // if (!check) {
-        //     res.send('You do not have permission to edit this question!')
-        //     // res.render('error', {error: 'You do not have permission to edit this question!'});
-        // }
-        // else {
-        //     res.send(result);
-        // // res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
-        // } 
+        // res.send(result);
+        const check=await checkPermission(req.user, 'question', result);
+        if (!check) {
+            res.send('You do not have permission to edit this question!')
+            // res.render('error', {error: 'You do not have permission to edit this question!'});
+        }
+        else {
+            res.send(result);
+        // res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
+        } 
     }
 }
 
 const editQuestion = async (req, res) => {
     const result = await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
-    result.question = req.body.question;
-    result.description = req.body.description;
-    result.save() 
-    .then((result) => {
-        res.send('question updated');
-        // res.redirect(`/showOneQuestion/${req.params.id}`); 
-    }) 
-    .catch(err => {
-        const errors = handlerError(err);
-        res.send(errors);
-        // res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
-    })
+    const check = await checkPermission(req.user, 'question', result);
+
+    if (!check) {
+        res.send('You do not have permission to edit this question!')
+        // res.render('error', {error: 'You do not have permission to edit this question!'});
+    }
+    else {
+            result.question = req.body.question;
+            result.description = req.body.description;
+            result.save() 
+            .then((result) => {
+                res.send(result);
+                // res.redirect(`/showOneQuestion/${req.params.id}`); 
+            }) 
+            .catch(err => {
+                const errors = handlerError(err);
+                res.send(errors);
+                // res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
+            })
+                }
 }
-
-// const editQuestion = async (req, res) => {
-
-//     // Looking for the question in db    
-//     try {
-//         const result = await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
-//         console.log(result);
-//         if(result) { //check if the question exists
-
-//             if(req.method === 'GET'){
-//                 //Checking user's permission
-//                 const check=await checkPermission(res.user, 'question', result);
-                
-//                 if (!check) {
-//                     res.send('You do not have permission to edit this question!')
-//                     // res.render('error', {error: 'You do not have permission to edit this question!'});
-//                 }
-
-//                 else {
-//                         res.send(result);
-//                     // res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
-                        
-//                 } 
-//             }
-//             if (req.method ==='POST'){
-
-//                 //Checking user's permission
-
-//                 const check=await checkPermission(res.user, 'question', result);
-//                 if (!check) {
-//                     res.send('You do not have permission to edit this question!')
-//                     // res.render('error', {error: 'You do not have permission to edit this question!'});
-//                 }
-//                 else {
-                
-//                         result.question = req.body.question;
-//                         result.description = req.body.description;
-//                         result.save() 
-//                         .then((result) => {
-//                             res.send(result);
-//                             // res.redirect(`/showOneQuestion/${req.params.id}`); 
-//                         }) 
-//                         .catch(err => {
-//                             const errors = handlerError(err);
-//                             res.send(errors);
-//                             // res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
-//                         })
-//                 }
-                    
-//             }
-    
-//         }
-//         //if cannot find the question in db
-//         else {
-//             res.send('Oop... record your want to find does not exist 111!');
-//             // res.render('error', {error: 'Oop... record your want to find does not exist!'}) 
-//         }
-        
-        
-//     }
-//     catch(error ){
-//         res.send('Oop... record your want to find does not exist 222!');
-//         // res.render('error', {error: 'Oop... record your want to find does not exist!'})
-//     }
-
-// }
 
 module.exports = {
     getQuestions,

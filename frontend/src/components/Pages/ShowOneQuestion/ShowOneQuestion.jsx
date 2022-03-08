@@ -8,11 +8,13 @@ import jwt_decode from 'jwt-decode';
 function ShowOneQuestion() {
 
   const [question, setQuestion] = useState("");
-  const [answers, setAnswers] = useState([]);
   const [userNameQuestion, setUsernameQuestion] = useState("")
   const [userIdQuestion, setUserIdQuestion] = useState("")
   const [error, setError] = useState('');
   const [loginUser, setLoginUser] = useState(null);
+
+  const [newAnswer, setNewAnswer] = useState({description:'', question_id: id});
+  const [answers, setAnswers] = useState([]);
 
   const navigate= useNavigate();
   const {id} = useParams();
@@ -61,8 +63,37 @@ const handleEditQuestion = (e) => {
   navigate('/editquestion' + '/' + id)
 }
 
+const token=localStorage.getItem('user');
+const decoded = jwt_decode(token);
+
+const setInput = ({target}) => {
+  setNewAnswer({
+      ...newAnswer,
+      [target.name]: target.value
+  });
+}
+
+const addNewAnswer = (e) => {
+  e.preventDefault();
   const token=localStorage.getItem('user');
-  const decoded = jwt_decode(token);
+
+  //send a post request to add a new answer
+  axios.post(`http://localhost:5000/addAnswer`, newAnswer, {
+      headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => {
+          setResult(res.data.result);
+          setAnswerErrors('');
+          setNewAnswer({
+              ...newAnswer,
+              description:''
+          })
+      })
+      .catch(err=> {
+          setAnswerErrors(err.response.data.description);
+          setResult('Add new answer failed.')
+      })
+}
 
   return (
     <div>
@@ -89,14 +120,14 @@ const handleEditQuestion = (e) => {
               </div>
 
               {/* <!-- input & submit answer --> */}
-              <form action="/addAnswer" method="POST" className="answerForm">
+              <form onSubmit={addNewAnswer} className="answerForm">
                   <label>Add your answer: </label>
-                  <input type="text" id="fieldAnswer" name="answer" placeholder="Enter answer" />
+                  <input type="text" id="fieldAnswer" name="answer" onChange={setInput} placeholder="Enter answer" />
                   <button className="btn btn-success btn-sm answerButton">Answer</button>
                   
-              
+{/*               // Van removed
                   <input type="hidden" name='question_id' value="" />
-                  <input type="hidden" name='user_id' value=""/>
+                  <input type="hidden" name='user_id' value=""/> */}
               </form>
 
               {/* <!-- Display answer --> */}

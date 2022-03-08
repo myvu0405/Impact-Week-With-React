@@ -12,6 +12,7 @@ questionRouter.get('/showOneQuestion/:id', protectedRoute, controller.showOneQue
 questionRouter.delete('/deleteQuestion/:id', protectedRoute, controller.delQuestion)
 
 questionRouter.post('/editQuestion/:id', protectedRoute, controller.editQuestion)
+
 questionRouter.get('/editQuestion/:id', protectedRoute, controller.editGetQuestion)
 
 module.exports = questionRouter

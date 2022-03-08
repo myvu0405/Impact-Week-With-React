@@ -45,10 +45,6 @@ const updateQuestion = (e) => {
   .catch(err => console.log(err))
 }
 
-
-
-console.log(question);
-
   return (
     <div>
         <Header />

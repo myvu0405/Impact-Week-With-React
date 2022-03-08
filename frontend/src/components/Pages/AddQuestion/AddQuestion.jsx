@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../../Layout/Header'
+import Footer from '../../Layout/Footer'
 // import jwt_decode from 'jwt-decode'; 
 import { useNavigate } from 'react-router-dom';
 import './AddQuestion.css'
@@ -67,6 +68,7 @@ function AddQuestion() {
               <Link className="btn btn-warning btn-CancelQuestion" to="/questions">Cancel</Link>
           </form>
       </div>
+      <Footer />
     </div>
   )
 }

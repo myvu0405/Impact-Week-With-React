@@ -64,8 +64,10 @@ const showOneQuestion = async (req, res) => {
                         // res.render('showOneQuestion', {result, answers,errors:null,pageTitle: 'Question detail'});
                         // console.log(result);
                         const username = result.user_id.username;
+                        const id = result.user_id.id;
+
                         // res.status(200).send(result.user_id.username)
-                        res.status(200).send({result,answers, username});
+                        res.status(200).send({result,answers, username, id});
                     })                
                     .catch(err => {
                         // res.render('error',{error:'Oop... record your want to find does not exist!'})
@@ -89,7 +91,8 @@ const showOneQuestion = async (req, res) => {
 // Delete one question
 
 const delQuestion = async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
+    
     //Checking if the question exists in the db...
     try {
         const question= await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
@@ -140,20 +143,21 @@ const editQuestion = async (req, res) => {
     //Looking for the question in db    
     try {
         const result = await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
-
+        console.log(result);
         if(result) { //check if the question exists
 
             if(req.method === 'GET'){
                 //Checking user's permission
-                const check=await checkPermission(res.locals.user, 'question', result);
+                const check=await checkPermission(res.user, 'question', result);
                 
                 if (!check) {
-                    
-                    res.render('error', {error: 'You do not have permission to edit this question!'});
+                    res.send('You do not have permission to edit this question!')
+                    // res.render('error', {error: 'You do not have permission to edit this question!'});
                 }
 
                 else {
-                        res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
+                        res.send(result);
+                    // res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
                         
                 } 
             }
@@ -161,10 +165,10 @@ const editQuestion = async (req, res) => {
 
                 //Checking user's permission
 
-                const check=await checkPermission(res.locals.user, 'question', result);
+                const check=await checkPermission(res.user, 'question', result);
                 if (!check) {
-                    
-                    res.render('error', {error: 'You do not have permission to edit this question!'});
+                    res.send('You do not have permission to edit this question!')
+                    // res.render('error', {error: 'You do not have permission to edit this question!'});
                 }
                 else {
                 
@@ -172,11 +176,13 @@ const editQuestion = async (req, res) => {
                         result.description = req.body.description;
                         result.save() 
                         .then((result) => {
-                            res.redirect(`/showOneQuestion/${req.params.id}`); 
+                            res.send(result);
+                            // res.redirect(`/showOneQuestion/${req.params.id}`); 
                         }) 
                         .catch(err => {
                             const errors = handlerError(err);
-                            res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
+                            res.send(errors);
+                            // res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
                         })
                 }
                     
@@ -184,10 +190,16 @@ const editQuestion = async (req, res) => {
     
         }
         //if cannot find the question in db
-        else res.render('error', {error: 'Oop... record your want to find does not exist!'}) 
+        else {
+            res.send('Oop... record your want to find does not exist 111!');
+            // res.render('error', {error: 'Oop... record your want to find does not exist!'}) 
+        }
+        
+        
     }
     catch(error ){
-        res.render('error', {error: 'Oop... record your want to find does not exist!'})
+        res.send('Oop... record your want to find does not exist 222!');
+        // res.render('error', {error: 'Oop... record your want to find does not exist!'})
     }
 
 }

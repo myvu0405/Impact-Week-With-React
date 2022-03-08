@@ -4,12 +4,14 @@ import './ShowOneQuestion.css'
 import moment from 'moment'
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import EditQuestion from '../EditQuestion/EditQuestion';
 
 function ShowOneQuestion() {
 
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState([]);
   const [userNameQuestion, setUsernameQuestion] = useState("")
+  const [userIdQuestion, setUserIdQuestion] = useState("")
   const [error, setError] = useState('');
   const [loginUser, setLoginUser] = useState(null);
 
@@ -31,6 +33,7 @@ function ShowOneQuestion() {
         .then(res => {
           // console.log(res);
           setUsernameQuestion(res.data.username)
+          setUserIdQuestion(res.data.id)
           setQuestion(res.data.result);
           setAnswers(res.data.answers);
         })
@@ -41,9 +44,12 @@ function ShowOneQuestion() {
     }       
   },[navigate,id]);
 
-  const handleDelQuestion = () => {
+  const handleDelQuestion = (e) => {
+    e.preventDefault();
     const token=localStorage.getItem('user');
-    axios.post(`http://localhost:5000/deleteQuestion/${id}`, {
+    const decoded = jwt_decode(token);
+    console.log(decoded.id);
+    axios.post(`http://localhost:5000/deleteQuestion/${id}`, decoded.id, {
             headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => {
@@ -52,6 +58,16 @@ function ShowOneQuestion() {
     })
     .catch(err => console.log(err))
   } 
+
+const handleEditQuestion = (e) => {
+  e.preventDefault();
+  navigate('/editquestion' + '/' + id)
+}
+
+  const token=localStorage.getItem('user');
+  const decoded = jwt_decode(token);
+  // console.log(decoded);
+  // console.log(userIdQuestion);
 
   return (
     <div>
@@ -68,13 +84,13 @@ function ShowOneQuestion() {
                     <p><strong>Created date: </strong>{moment(question.createdAt).format('MMMM Do YYYY, h:mm a')}</p>
                     <p><strong>Updated date: </strong>{moment(question.updatedAt).format('MMMM Do YYYY, h:mm a')}</p>
                   </div>
+                  {userIdQuestion && userIdQuestion == decoded.id &&
                   <div className="edit-delete-question">
-                    {/* if (result.user_id.id == locals.user.id){  */}
-                      <Link className="btn btn-info btn-sm" to="/editQuestion/result.id" >Edit question</Link>
-                      <button className="btn btn-danger btn-sm btnEditDelQuestion" onClick={handleDelQuestion}>Delete question</button>
-                      {/* <Link className="btn btn-danger btn-sm btnEditDelQuestion" to={`/deleteQuestion/${id}` } >Delete question</Link> */}
-                    {/* } */}
+                        {/* <Link className="btn btn-info btn-sm" to={`/editQuestion/${id}`} >Edit question</Link> */}
+                        <button className="btn btn-info btn-sm btnEditDelQuestion" onClick={handleEditQuestion}>Edit question</button>
+                        <button className="btn btn-danger btn-sm btnEditDelQuestion" onClick={handleDelQuestion}>Delete question</button>
                   </div>
+                  }
               </div>
 
               {/* <!-- input & submit answer --> */}

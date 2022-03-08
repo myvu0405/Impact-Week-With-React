@@ -19,7 +19,7 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
           <Route path="/addQuestion" element={<AddQuestion/>} />
-          <Route path="/editQuestion" element={<EditQuestion/> }/>
+          <Route path="/editQuestion/:id" element={<EditQuestion/> }/>
           <Route path="/editAnswer" element={<EditAnswer/> } />
           <Route path="/ShowOneQuestion/:id" element={<ShowOneQuestion/>} />
         </Routes>      

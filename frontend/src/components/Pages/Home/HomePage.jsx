@@ -14,7 +14,7 @@ function Homepage() {
   const navigate= useNavigate();
 
   const getQuestions = (token) => {
-      axios.get(`http://localhost:5000/questions`, {
+      axios.get(`http://localhost:5000/all-questions`, {
           headers: { 'Authorization': `Bearer ${token}` }
           })
           .then(res => { 

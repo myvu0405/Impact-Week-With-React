@@ -107,7 +107,7 @@ const deleteAnswer = (answer_id) => {
       
       <Link to="/questions" className="btn btn-info btnBackQuestion">Back</Link>
       {questionErrors && <p className='errors'>{questionErrors}</p>}
-
+      {question && (
         <div className="showOneContainer">
           <div className="card" id="cardShowOne">
             <div className="card-body content">
@@ -137,6 +137,7 @@ const deleteAnswer = (answer_id) => {
             </div>
           </div>
         </div>
+      )}
     </div>
   )
 }

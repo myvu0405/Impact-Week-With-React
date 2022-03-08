@@ -5,7 +5,7 @@ import Signup from './components/Pages/Signup/Signup';
 import Login from './components/Pages/Login/Login';
 import AddQuestion from './components/Pages/AddQuestion/AddQuestion';
 import EditQuestion from './components/Pages/EditQuestion/EditQuestion';
-import EditAnswer from './components/Pages/EditAnswer/EditAnswer';
+import EditAnswer from './components/Pages/Answer/EditAnswer';
 import ShowOneQuestion from './components/Pages/ShowOneQuestion/ShowOneQuestion';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';

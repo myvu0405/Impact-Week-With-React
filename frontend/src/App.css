@@ -23,6 +23,9 @@ body{
   gap: 30px;
   margin-top: 15px;
 } */
+.footer {
+  text-align: center;
+}
 .project-info {
   font-size: 40px;
   margin-top: 10px;

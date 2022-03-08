@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
-import Header from '../../Layout/Header'
-import Footer from '../../Layout/Footer'
 import '../AddQuestion/AddQuestion.css'
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -47,7 +45,6 @@ const updateQuestion = (e) => {
 
   return (
     <div>
-        <Header />
         <h3 className="title"> Edit a question </h3>
         <div className="add-question">
             <form onSubmit={updateQuestion}>
@@ -61,7 +58,6 @@ const updateQuestion = (e) => {
                 <Link id="btn-editQuestion" className="btn btn-warning" to={`/showOneQuestion/${id}`}>Cancel</Link>
             </form>
         </div>
-        <Footer />
     </div>
   )
 }

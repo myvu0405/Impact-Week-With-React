@@ -133,67 +133,55 @@ const delQuestion = async (req, res) => {
 }
 
 //Edit one question function:
+const editGetQuestion = async (req, res) => {
+    const result = await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
+    if (!result) {//IF answer not found
+        // res.render('error', {error: 'Oop... record your want to find does not exist!'});
+        res.status(400).send('Oop... record your want to find does not exist!');
+    } else {
+        // res.send(result);
+        const check=await checkPermission(req.user, 'question', result);
+        if (!check) {
+            res.send('You do not have permission to edit this question!')
+            // res.render('error', {error: 'You do not have permission to edit this question!'});
+        }
+        else {
+            res.send(result);
+        // res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
+        } 
+    }
+}
 
 const editQuestion = async (req, res) => {
+    const result = await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
+    const check = await checkPermission(req.user, 'question', result);
 
-    //Looking for the question in db    
-    try {
-        const result = await Question.findById(mongoose.Types.ObjectId(req.params.id)).populate('user_id');
-
-        if(result) { //check if the question exists
-
-            if(req.method === 'GET'){
-                //Checking user's permission
-                const check=await checkPermission(res.locals.user, 'question', result);
-                
-                if (!check) {
-                    
-                    res.render('error', {error: 'You do not have permission to edit this question!'});
-                }
-
-                else {
-                        res.render('editQuestion', { result, errors: false, pageTitle: 'Edit question'})
-                        
-                } 
-            }
-            if (req.method ==='POST'){
-
-                //Checking user's permission
-
-                const check=await checkPermission(res.locals.user, 'question', result);
-                if (!check) {
-                    
-                    res.render('error', {error: 'You do not have permission to edit this question!'});
-                }
-                else {
-                
-                    result.question = req.body.question;
-                    result.description = req.body.description;
-                    result.save() 
-                    .then((result) => {
-                        res.redirect(`/showOneQuestion/${req.params.id}`); 
-                    }) 
-                    .catch(err => {
-                        const errors = handlerError(err);
-                        res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
-                    })
-                }
-                    
-            }
-    
-        }
-        //if cannot find the question in db
-        else res.render('error', {error: 'Oop... record your want to find does not exist!'}) 
+    if (!check) {
+        res.send('You do not have permission to edit this question!')
+        // res.render('error', {error: 'You do not have permission to edit this question!'});
     }
-    catch(error ){
-        res.render('error', {error: 'Oop... record your want to find does not exist!'})
-    }
-
+    else {
+            result.question = req.body.question;
+            result.description = req.body.description;
+            result.save() 
+            .then((result) => {
+                res.send(result);
+                // res.redirect(`/showOneQuestion/${req.params.id}`); 
+            }) 
+            .catch(err => {
+                const errors = handlerError(err);
+                res.send(errors);
+                // res.render('editQuestion', {errors, result, pageTitle: 'Edit question'});
+            })
+                }
 }
+
 
 module.exports = {
     getQuestions,
     addQuestion,
     showOneQuestion,
     delQuestion,
-    editQuestion}
+    editGetQuestion,
+    editQuestion
+}

@@ -41,7 +41,6 @@ const getOneAnswer = async (req,res) =>
     try {    
         
         const answer = await Answer.findById(mongoose.Types.ObjectId(req.params.id)).populate('question_id').populate('user_id');
-
         if (!answer) {//IF answer not found
             // res.render('error', {error: 'Oop... record your want to find does not exist!'});
             res.status(400).send('Oop... record your want to find does not exist!');
@@ -49,7 +48,7 @@ const getOneAnswer = async (req,res) =>
         else {
 
             //Checking user permission:
-            const check=await checkPermission(res.locals.user, 'answer', answer);
+            const check=await checkPermission(req.user, 'answer', answer);
             if (!check) {
                 
                 res.status(401).send('You do not have right to edit this answer!');

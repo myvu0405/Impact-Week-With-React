@@ -29,7 +29,6 @@ export default function EditAnswer() {
             })
             .then(res => {
                 setAnswer(res.data);
-                setUpdatedAnswer(answer.description)                
 
             })
             .catch(err=> {
@@ -39,13 +38,16 @@ export default function EditAnswer() {
     },[navigate,id,token])
 
     const setUpdate = ({target}) => {
-        setUpdatedAnswer(target.value)
+        setAnswer({
+            ...answer,
+            description: target.value
+        })
     }
 
     const updateAnswer = (e) => {
         e.preventDefault();
         //send a post request to update an answer
-        axios.put(`http://localhost:5000/editAnswer/${id}`, {description: updatedAnswer}, {
+        axios.put(`http://localhost:5000/editAnswer/${id}`, {description: answer.description}, {
             headers: { 'Authorization': `Bearer ${token}` }
             })
             .then(res => {
@@ -67,19 +69,23 @@ export default function EditAnswer() {
     return (
         <div>
             <h3 className='title'>Edit Answer</h3>
-            {result && <p><strong>{result}</strong></p>}
-            <div className="add-question">
+            {answer && (<div className="add-question">
                 <form className='form' onSubmit={updateAnswer}>
                     <label >Update your answer here:</label>
-                    <textarea cols="80"  rows="2" name="description" onChange={setUpdate} value={updateAnswer}/>
+                    <textarea cols="80"  rows="2" name="description" onChange={setUpdate} value={answer.description}></textarea>
+                    <br />
                         { errors &&
-                            <small id="err" className="form-text text-muted">
+                            <small id="err" className="form-text text-muted errors">
                             {errors} </small>
+                            <br />
                         }
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <button id="btn-editQuestion" className="btn btn-warning" onClick={goBack}>Back</button>
                 </form>
-            </div>
+
+                {result && <p><strong>{result}</strong></p>}
+
+            </div>)}
         </div>
     )
 }

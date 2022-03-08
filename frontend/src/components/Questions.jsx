@@ -39,14 +39,14 @@ export default function Questions() {
             
             <h4><Link to='/new-question'>Add a new questions</Link></h4>
 
-            {questions.length>0 && ( questions.map( (question, index) => 
+            {questions.length>0 && ( questions.map( (q, index) => 
                 (<div key={index} className='question'>
-                    <label>Question: {question.question}</label>
-                    <label >Description: {question.description}</label>
-                    <label >Created at: {question.createdAt}</label>
-                    <label >Last updated at: {question.updatedAt}</label>
-                    
-                    <Link to={`/one-question/${question._id}`}>See more</Link>
+                    <label>Question: {q.question.question}</label>
+                    <label >Description: {q.question.description}</label>
+                    <label >Created at: {q.question.createdAt}</label>
+                    <label >Last updated at: {q.question.updatedAt}</label>
+                    <small>{q.answerNum} answer(s)</small>
+                    <Link to={`/one-question/${q.question._id}`}>See more</Link>
                 </div>)))}
             
             {error && <p className='errors'>{error}</p>}

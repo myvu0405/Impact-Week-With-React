@@ -11,8 +11,6 @@ export default function EditAnswer() {
     const navigate = useNavigate();
     const token=localStorage.getItem('user');
 
-
-    const [updatedAnswer, setUpdatedAnswer] = useState('');
     const [answer, setAnswer] = useState(null);
     const [errors, setErrors] = useState('');
     const [result, setResult] = useState('');
@@ -75,9 +73,11 @@ export default function EditAnswer() {
                     <textarea cols="80"  rows="2" name="description" onChange={setUpdate} value={answer.description}></textarea>
                     <br />
                         { errors &&
+                            <>
                             <small id="err" className="form-text text-muted errors">
                             {errors} </small>
                             <br />
+                            </>
                         }
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <button id="btn-editQuestion" className="btn btn-warning" onClick={goBack}>Back</button>

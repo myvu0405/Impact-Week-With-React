@@ -12,7 +12,7 @@ import EditQuestion from './components/EditQuestion'
 import EditAnswer from './components/EditAnswer';
 
 
-function App() {
+export default function App() {
   return (
     <div className="App">
       <BrowserRouter>
@@ -36,4 +36,3 @@ function App() {
   );
 }
 
-export default App;

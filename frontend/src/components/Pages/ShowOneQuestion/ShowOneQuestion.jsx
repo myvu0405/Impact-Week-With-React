@@ -4,7 +4,6 @@ import './ShowOneQuestion.css'
 import moment from 'moment'
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import EditQuestion from '../EditQuestion/EditQuestion';
 
 function ShowOneQuestion() {
 
@@ -42,14 +41,12 @@ function ShowOneQuestion() {
           setError(err.response.data);
         })
     }       
-  },[navigate,id]);
+  },[]);
 
   const handleDelQuestion = (e) => {
     e.preventDefault();
     const token=localStorage.getItem('user');
-    const decoded = jwt_decode(token);
-    console.log(decoded.id);
-    axios.post(`http://localhost:5000/deleteQuestion/${id}`, decoded.id, {
+    axios.delete(`http://localhost:5000/deleteQuestion/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => {
@@ -66,8 +63,6 @@ const handleEditQuestion = (e) => {
 
   const token=localStorage.getItem('user');
   const decoded = jwt_decode(token);
-  // console.log(decoded);
-  // console.log(userIdQuestion);
 
   return (
     <div>

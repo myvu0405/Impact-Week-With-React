@@ -1,0 +1,44 @@
+.addQuestionTitle{
+    margin-left: 320px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    font-style: italic;
+    display: flex;
+}
+.addQuestionTitle > img{
+    margin-left: 30px;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+body > div > h3{
+    color: blue;
+}
+.add-question form{
+    max-width: 500px;
+    margin: auto;
+}
+.add-question input, .add-question textarea{
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+.add-question label{
+    display: block;
+    margin-top: 24px;
+}
+textarea{
+    height: 300px;
+}
+.add-question > form > button{
+    margin-left: 100px;
+}
+.btnBackQuestion{
+    margin-top: 20px;
+}
+.btn-CancelQuestion{
+    margin: 30px 0 0 110px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 600;
+}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import './Login.css';
+import Banner2 from '../../Images/Banner2.png'
 
 export default class Login extends Component {
 
@@ -9,7 +11,7 @@ export default class Login extends Component {
         this.state={
             email:'',
             password:'',
-            result:'',
+            user: "",
             errors: {
                 email:'',
                 password:''
@@ -30,12 +32,12 @@ export default class Login extends Component {
 
         axios.post('http://localhost:5000/login', loginInfo)
             .then( res => {
-
+                // console.log(res);
                 let token= res.data;
                 localStorage.setItem('user', token);
-
+                
                 this.setState({
-                    result:'Login succeeded.',
+                    user: res.data.username,
                     errors: {
                         email:'',
                         password:''
@@ -47,17 +49,16 @@ export default class Login extends Component {
             .catch(err => {
                 console.log(err);
                 this.setState({
-                    errors:err.response.data,
-                    result:'Login failed.'
+                    errors: err.response.data,
 
                 })
             })
     }
     render() {
-        const {email,password,result,errors,redirect} = this.state;
+        const {email, password, errors, redirect} = this.state;
+        // console.log(this.state.user);
         return (
         <div>
-            <h3>This is login page</h3>
                 <div className="loginContainer">
                     <form className="formLogIn" onSubmit={this.handleLogin}>
                         <h2>Login</h2>
@@ -70,13 +71,13 @@ export default class Login extends Component {
                         <input type="password" value={password} onChange={this.setLoginInfo} name="password" placeholder="Please write your password"  />
                         {errors.password && <small className='errors'>{errors.password}</small>}
                         
-                        <br/>
                         <button className="btn-info" type="submit">Login</button>
                     </form>
-                    {result && <p>{result}</p>}
+                    <div className="imgLogIn">
+                        <img src={Banner2} alt="Login_image" />
+                    </div>
                 </div>
-            {redirect && <Navigate to='/questions' replace={true} />}
-
+            {redirect && <Navigate to='/questions' replace={true} user={this.state.user} />}
         </div>
         )
     }

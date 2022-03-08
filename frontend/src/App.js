@@ -1,15 +1,14 @@
 import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomePage from './components/HomePage';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Questions from './components/Questions'
-import NewQuestion from './components/NewQuestion'
-import OneQuestion from './components/OneQuestion'
-import EditQuestion from './components/EditQuestion'
-import EditAnswer from './components/EditAnswer';
+import HomePage from './components/Pages/Home/Homepage';
+import Signup from './components/Pages/Signup/Signup';
+import Login from './components/Pages/Login/Login';
+import AddQuestion from './components/Pages/AddQuestion/AddQuestion';
+import EditQuestion from './components/Pages/EditQuestion/EditQuestion';
+import EditAnswer from './components/Pages/EditAnswer/EditAnswer';
+import ShowOneQuestion from './components/Pages/ShowOneQuestion/ShowOneQuestion';
+import Header from './components/Layout/Header';
+import Footer from './components/Layout/Footer';
 
 
 export default function App() {
@@ -21,9 +20,9 @@ export default function App() {
           <Route path='/' element={<HomePage/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
-          <Route path='/questions' element={<Questions/>}/>
-          <Route path='/new-question' element={<NewQuestion/>}/>
-          <Route path='/one-question/:id' element={<OneQuestion/>}/>
+          <Route path='/questions' element={<HomePage/>}/>
+          <Route path='/new-question' element={<AddQuestion/>}/>
+          <Route path='/one-question/:id' element={<ShowOneQuestion/>}/>
 
           <Route path='/edit-question/:id' element={<EditQuestion/>}/>
           <Route path='/edit-answer/:id' element={<EditAnswer/>}/>

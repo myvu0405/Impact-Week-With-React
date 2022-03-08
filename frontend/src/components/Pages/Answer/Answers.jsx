@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import moment from 'moment'
+
 
 export default function Answers(props) {
 
@@ -16,10 +18,11 @@ export default function Answers(props) {
                     <p className="card-textOneQuestion">{answer.description}</p>
                     <div className="createdInfo-Answer">
                         <div>
-                            <small ><strong>Created at: </strong>{answer.createdAt}</small><br />
-                            <small ><strong>Updated at: </strong>{answer.updatedAt}</small>
+                            <p style={{fontStyle: "italic", fontSize: "10px", marginBottom: "1px"}}><strong>Created at: </strong>{moment(answer.createdAt).format('MMMM Do YYYY, h:mm a')}</p>
+                            <p style={{fontStyle: "italic", fontSize: "10px"}}><strong>Updated at: </strong>{moment(answer.updatedAt).format('MMMM Do YYYY, h:mm a')}</p>
                         </div>
-                        <small ><strong>Answer by:</strong>{answer.user_id.username}</small>
+                        <p style={{color: "blue", fontstyle: "italic"}}><strong>Answer by: </strong>{answer.user_id.username}</p>
+
                     </div>
                     <div className="g-btnEditDelAnswer">
                         {answer.user_id._id === loginUser.id && (

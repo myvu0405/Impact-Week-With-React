@@ -81,9 +81,10 @@ export default function EditAnswer() {
                         }
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <button id="btn-editQuestion" className="btn btn-warning" onClick={goBack}>Back</button>
+                    {result && <p><strong>{result}</strong></p>}
+
                 </form>
 
-                {result && <p><strong>{result}</strong></p>}
 
             </div>)}
         </div>

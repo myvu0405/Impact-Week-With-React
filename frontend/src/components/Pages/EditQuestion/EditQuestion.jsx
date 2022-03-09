@@ -39,7 +39,7 @@ const updateQuestion = (e) => {
   axios.post(`http://localhost:5000/editQuestion/${id}`, data, {
           headers: { 'Authorization': `Bearer ${token}` }
       })
-  .then( res => navigate(`/showOneQuestion/${id}`))
+  .then( res => navigate(`/one-question/${id}`))
   .catch(err => console.log(err))
 }
 
@@ -55,7 +55,7 @@ const updateQuestion = (e) => {
                 <textarea  name="description" value={question.description} onChange={setQuestionData}></textarea>
                 
                 <button type="submit" className="btn btn-primary" >Submit</button>
-                <Link id="btn-editQuestion" className="btn btn-warning" to={`/showOneQuestion/${id}`}>Cancel</Link>
+                <Link id="btn-editQuestion" className="btn btn-warning" to={`/one-question/${id}`}>Cancel</Link>
             </form>
         </div>
     </div>

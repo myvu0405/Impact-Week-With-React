@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import signup_img from '../../Images/signup.jpg'
 
+const apiBase= process.env.REACT_APP_API_BASE;
 
 const defaultUser = {
     username:'',
@@ -42,7 +43,7 @@ export default class Signup extends Component {
 
     handleSignup = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/signup', this.state.user)
+        axios.post(`${apiBase}signup`, this.state.user)
             .then( res => {
                 this.setState({
                     result:res.data,

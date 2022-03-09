@@ -4,7 +4,10 @@ import "./Homepage.css"
 import handPointer from '../../Images/hand-pointer.jpg'
 import homePageImg from '../../Images/Homepage_img.png'
 import { Link, useNavigate } from 'react-router-dom';
-import moment from 'moment'
+import moment from 'moment';
+
+const apiBase= process.env.REACT_APP_API_BASE;
+
 
 function Homepage() {
 
@@ -14,7 +17,7 @@ function Homepage() {
   const navigate= useNavigate();
 
   const getQuestions = (token) => {
-      axios.get(`http://localhost:5000/all-questions`, {
+      axios.get(`${apiBase}all-questions`, {
           headers: { 'Authorization': `Bearer ${token}` }
           })
           .then(res => { 

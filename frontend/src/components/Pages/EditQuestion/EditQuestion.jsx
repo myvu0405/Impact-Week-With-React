@@ -5,6 +5,9 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
+const apiBase= process.env.REACT_APP_API_BASE;
+
+
 function EditQuestion() {
 
 const [question, setQuestion] = useState({question:'', description:''});
@@ -15,7 +18,7 @@ const decoded = jwt_decode(token);
 
 useEffect(() => {
   
-  axios.get(`http://localhost:5000/editQuestion/${id}`, {
+  axios.get(`${apiBase}editQuestion/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
       })
   .then(res => { 
@@ -36,7 +39,7 @@ const updateQuestion = (e) => {
     question: question.question,
     description: question.description
   }
-  axios.post(`http://localhost:5000/editQuestion/${id}`, data, {
+  axios.post(`${apiBase}editQuestion/${id}`, data, {
           headers: { 'Authorization': `Bearer ${token}` }
       })
   .then( res => navigate(`/one-question/${id}`))

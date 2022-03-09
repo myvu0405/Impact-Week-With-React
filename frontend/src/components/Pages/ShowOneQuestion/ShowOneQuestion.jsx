@@ -8,6 +8,9 @@ import jwt_decode from 'jwt-decode';
 import Answers from '../Answer/Answers';
 import AddAnswer from '../Answer/AddAnswer';
 
+const apiBase= process.env.REACT_APP_API_BASE;
+
+
 function ShowOneQuestion() {
 
     const navigate= useNavigate();
@@ -32,7 +35,7 @@ function ShowOneQuestion() {
     } else {
         const decoded = jwt_decode(token);
         setLoginUser(decoded);
-        axios.get(`http://localhost:5000/showOneQuestion/${id}`, {
+        axios.get(`${apiBase}showOneQuestion/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         })
         .then(res => {
@@ -48,7 +51,7 @@ function ShowOneQuestion() {
 
   const handleDelQuestion = () => {
     const token=localStorage.getItem('user');
-    axios.delete(`http://localhost:5000/deleteQuestion/${id}`, {
+    axios.delete(`${apiBase}deleteQuestion/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => {
@@ -74,7 +77,7 @@ const addNewAnswer = (e) => {
     const token=localStorage.getItem('user');
 
     //send a post request to add a new answer
-    axios.post(`http://localhost:5000/addAnswer`, newAnswer, {
+    axios.post(`${apiBase}addAnswer`, newAnswer, {
         headers: { 'Authorization': `Bearer ${token}` }
         })
         .then(res => {
@@ -92,7 +95,7 @@ const addNewAnswer = (e) => {
 }
 
 const deleteAnswer = (answer_id) => {
-    axios.delete(`http://localhost:5000/deleteAnswer/${answer_id}`, {
+    axios.delete(`${apiBase}deleteAnswer/${answer_id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
         })
         .then(res => {

@@ -4,6 +4,9 @@ import axios from 'axios';
 import './Login.css';
 import Banner2 from '../../Images/Banner2.png'
 
+
+const apiBase= process.env.REACT_APP_API_BASE;
+
 export default class Login extends Component {
 
     constructor(props) {
@@ -30,7 +33,7 @@ export default class Login extends Component {
         const {email,password} = this.state;
         const loginInfo={email,password};
 
-        axios.post('http://localhost:5000/login', loginInfo)
+        axios.post(`${apiBase}login`, loginInfo)
             .then( res => {
                 // console.log(res);
                 let token= res.data;

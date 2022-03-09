@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
 
+const apiBase= process.env.REACT_APP_API_BASE;
+
 
 export default function EditAnswer() {
 
@@ -22,7 +24,7 @@ export default function EditAnswer() {
             navigate('/');
         } else {
 
-            axios.get(`http://localhost:5000/oneAnswer/${id}`, {
+            axios.get(`${apiBase}oneAnswer/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
             .then(res => {
@@ -45,7 +47,7 @@ export default function EditAnswer() {
     const updateAnswer = (e) => {
         e.preventDefault();
         //send a post request to update an answer
-        axios.put(`http://localhost:5000/editAnswer/${id}`, {description: answer.description}, {
+        axios.put(`${apiBase}editAnswer/${id}`, {description: answer.description}, {
             headers: { 'Authorization': `Bearer ${token}` }
             })
             .then(res => {

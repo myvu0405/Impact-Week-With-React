@@ -2,7 +2,10 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
-import './AddQuestion.css'
+import './AddQuestion.css';
+
+const apiBase= process.env.REACT_APP_API_BASE;
+
 
 function AddQuestion() {
 
@@ -29,7 +32,7 @@ function AddQuestion() {
       e.preventDefault();
       const token=localStorage.getItem('user');
       //send a post request to add a new question
-      axios.post(`http://localhost:5000/addQuestion`, question, {
+      axios.post(`${apiBase}addQuestion`, question, {
           headers: { 'Authorization': `Bearer ${token}` }
           })
           .then(res => {

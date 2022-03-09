@@ -67,9 +67,9 @@ const checkPermission = async (user,objectType, object,action='') =>{
         }
         else {
             const question = object.question_id;
-            const userInDb = await User.findById(user.id);
-            
-            if (userInDb== question.user_id || user.id==object.user_id.id) return true;
+            // const userInDb = await User.findById(user.id);
+            // console.log(user.id, object.question_id.user_id._id.toString());
+            if (user.id== object.question_id.user_id._id.toString() || user.id==object.user_id.id) return true;
             else return false;
         }
     }

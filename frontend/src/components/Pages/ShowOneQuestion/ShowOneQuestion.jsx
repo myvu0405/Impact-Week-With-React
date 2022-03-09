@@ -38,12 +38,13 @@ function ShowOneQuestion() {
         .then(res => {
           setQuestion(res.data.result);
           setAnswers(res.data.answers);
+          setResult('');
         })
         .catch(err => {
             setQuestionErrors(err.response.data);
         })
     }       
-  },[navigate,id,token,result]);
+  },[navigate,id,token,result,newAnswer]);
 
   const handleDelQuestion = () => {
     const token=localStorage.getItem('user');

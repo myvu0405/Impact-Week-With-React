@@ -116,7 +116,7 @@ const deleteAnswer = (answer_id) => {
 const editAnswer = (e) => {
 }
 
- console.log(answers);
+//  console.log(answers);
   return (
     <div>
       
@@ -150,7 +150,7 @@ const editAnswer = (e) => {
 
               {/* <!-- Display answer --> */}
               {/* if(answers.length > 0){ */}
-                <small>There are currently answer(s) to this question.</small>
+                <small>There are currently {answers.length} answer(s) to this question.</small>
                   { answers && answers.map(value => {
                     return (
                       <div className="showAnswer" key={value._id}>
@@ -160,13 +160,17 @@ const editAnswer = (e) => {
                               <p style={{fontStyle: "italic", fontSize: "10px", marginBottom: "1px"}}><strong>Created at: </strong>{moment(value.createdAt).format('MMMM Do YYYY, h:mm a')}</p>
                               <p style={{fontStyle: "italic", fontSize: "10px"}}><strong>Updated at:</strong>{moment(value.updatedAt).format('MMMM Do YYYY, h:mm a')}</p>
                             </div>
-                            <p style={{color: "blue", fontstyle: "italic"}}><strong>Answer by:</strong>{value.user_id.username}</p>
+                            <p style={{color: "blue", fontstyle: "italic"}}><strong>Answer by: </strong>{value.user_id.username}</p>
                         </div>
                         <div className="g-btnEditDelAnswer">
-                            {/* if(answer.user_id.id == locals.user.id){ */}
-                                <button className="btn btn-info btn-sm btnEditDelAnswer" onClick={editAnswer}>Edit Answer</button>
-                                <button className="btn btn-danger btn-sm btnEditDelAnswer" onClick={() => deleteAnswer(value._id)}>Delete Answer</button>
-                            {/* } */}
+                          {value.user_id && value.user_id._id == decoded.id &&
+                            /* if(answer.user_id.id == locals.user.id){ */
+                                <button className="btn btn-info btn-sm btnEditDelAnswer" onClick={() => navigate(`/editAnswer/${value._id}`)}>Edit Answer</button>
+                            }      
+                            { value.user_id && value.user_id._id == decoded.id &&
+                                <button className="btn btn-danger btn-sm btnEditDelAnswer btnDel" onClick={() => deleteAnswer(value._id)}>Delete Answer</button>
+                            }
+                                {/* } */}
                             {/* if (result.user_id.id == locals.user.id || answer.user_id.id == locals.user.id){ */}
                             {/* <Link className="btn btn-danger btn-sm btnEditDelAnswer" to="/deleteAnswer/answer.id" >Delete answer</Link> */}
                             {/* } */}

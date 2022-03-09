@@ -56,11 +56,10 @@
 .g-btnEditDelAnswer{
     display: flex;
     justify-content: inline;
-    margin-bottom: 10px;
-    margin-left: 410px;
+    margin: 0 0 10px 360px;
 }
 /* btn delete answer */
-.g-btnEditDelAnswer > a{
+.btnDel{
     margin-left: 10px;
 }
 .createdInfo-Answer{

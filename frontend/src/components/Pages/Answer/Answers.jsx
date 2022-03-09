@@ -1,12 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment'
 
 
 export default function Answers(props) {
 
     const {answers, loginUser,questionOwnerId} = props;
-
+    const navigate= useNavigate();
+    
     const deleteOneAnswer =(id) => {
         props.onClick(id);
     }
@@ -26,10 +27,11 @@ export default function Answers(props) {
                     </div>
                     <div className="g-btnEditDelAnswer">
                         {answer.user_id._id === loginUser.id && (
-                            <Link to={`/edit-answer/${answer._id}`}>Edit answer</Link>
+                            // <Link to={`/edit-answer/${answer._id}`} className="btn btn-info btn-sm btnEditDelAnswer">Edit answer</Link>
+                            <button className="btn btn-info btn-sm btnEditDelAnswer" onClick={() => navigate(`/edit-answer/${answer._id}`)}>Edit Answer</button>
                         )}
                         {(questionOwnerId === loginUser.id || answer.user_id._id ===loginUser.id) &&
-                        <button onClick={() => deleteOneAnswer(answer._id)} className="btn btn-danger btn-sm btnEditDelAnswer" >Delete answer</button>
+                        <button onClick={() => deleteOneAnswer(answer._id)} className="btn btn-danger btn-sm btnEditDelAnswer btnDel" >Delete answer</button>
                         }
                     </div>
                 </div>

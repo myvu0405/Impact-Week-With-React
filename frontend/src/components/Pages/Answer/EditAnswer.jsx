@@ -71,17 +71,17 @@ export default function EditAnswer() {
                 <form className='form' onSubmit={updateAnswer}>
                     <label >Update your answer here:</label>
                     <textarea cols="80"  rows="2" name="description" onChange={setUpdate} value={answer.description}></textarea>
-                    <br />
                         { errors &&
                             <>
-                            <small id="err" className="form-text text-muted errors">
+                            <small id="err" className="errors">
                             {errors} </small>
                             <br />
                             </>
                         }
+                    {result && <p><strong>{result}</strong></p>}
+
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <button id="btn-editQuestion" className="btn btn-warning" onClick={goBack}>Back</button>
-                    {result && <p><strong>{result}</strong></p>}
 
                 </form>
 
